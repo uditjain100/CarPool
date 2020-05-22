@@ -17,8 +17,10 @@ import android.os.Looper
 import android.os.SystemClock
 import android.provider.Settings
 import android.util.Log
+import android.view.Gravity
 import android.view.animation.LinearInterpolator
 import android.widget.CompoundButton
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.common.api.Status
@@ -36,6 +38,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import kotlinx.android.synthetic.main.activity_welcome.*
+import kotlinx.android.synthetic.main.toast_layout.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -330,8 +333,14 @@ class WelcomeActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (isChecked) {
                     startLocationUpdates()
                     displayLocationUpdates()
-                    Toast.makeText(this@WelcomeActivity, "You are Online", Toast.LENGTH_LONG)
-                        .show()
+                    val toastLayout = layoutInflater.inflate(R.layout.toast_layout, linearLayout)
+
+                    val myToast = Toast(applicationContext)
+                    myToast.duration = Toast.LENGTH_LONG
+                    myToast.view = toastLayout
+                    myToast.show()
+//                    Toast.makeText(this@WelcomeActivity, "You are Online", Toast.LENGTH_LONG)
+//                        .show()
                 } else {
                     stopLocationUpdates()
                     mMap.clear()
