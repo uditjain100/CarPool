@@ -18,6 +18,7 @@ import android.os.SystemClock
 import android.provider.Settings
 import android.util.Log
 import android.view.Gravity
+import android.view.View
 import android.view.animation.LinearInterpolator
 import android.widget.CompoundButton
 import android.widget.LinearLayout
@@ -47,7 +48,6 @@ import org.json.JSONObject
 import udit.programmer.co.carpool.Retrofit.RetrofitClient
 
 class WelcomeActivity : AppCompatActivity(), OnMapReadyCallback {
-
 
     private lateinit var mMap: GoogleMap
     private lateinit var mCurrent: Marker
@@ -154,34 +154,34 @@ class WelcomeActivity : AppCompatActivity(), OnMapReadyCallback {
 
         polylineList = ArrayList()
 
-        var autoCompleteFragment =
-            getSupportFragmentManager().findFragmentById(R.id.place_autocomplete_fragment) as AutocompleteSupportFragment
-        autoCompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-            override fun onPlaceSelected(place: Place) {
-                if (location_switch.isChecked) {
-                    destination = place.address.toString().replace(" ", "+")
-                    getDirection()
-                } else {
-                    Toast.makeText(
-                        this@WelcomeActivity,
-                        "Please change your status to ONLINE",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
-
-            override fun onError(status: Status) {
-
-            }
-        })
-
-//        btn_go.setOnClickListener(object : View.OnClickListener {
-//            override fun onClick(v: View?) {
-//                destination = search_edit_text.text.toString().replace(" ", "+")
-//                Log.d("Creased Meteor", destination)
-//                getDirection()
+//        var autoCompleteFragment =
+//            getSupportFragmentManager().findFragmentById(R.id.place_autocomplete_fragment) as AutocompleteSupportFragment
+//        autoCompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+//            override fun onPlaceSelected(place: Place) {
+//                if (location_switch.isChecked) {
+//                    destination = place.address.toString().replace(" ", "+")
+//                    getDirection()
+//                } else {
+//                    Toast.makeText(
+//                        this@WelcomeActivity,
+//                        "Please change your status to ONLINE",
+//                        Toast.LENGTH_LONG
+//                    ).show()
+//                }
+//            }
+//
+//            override fun onError(status: Status) {
+//
 //            }
 //        })
+
+        btn_go.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                destination = search_edit_text.text.toString().replace(" ", "+")
+                Log.d("Creased Meteor", "This is the destination -> $destination")
+                getDirection()
+            }
+        })
 
     }
 
@@ -201,26 +201,26 @@ class WelcomeActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun getDirection() {
-
         currentPosition = LatLng(mLastLocation!!.latitude, mLastLocation!!.longitude)
-        var requestApi = "https://maps.googleapis.com/maps/api/directions/json?" +
+        Log.d("Creased Mentor", " This is the Current Position -> ${currentPosition.toString()}")
+        val requestApi = "https://maps.googleapis.com/maps/api/directions/json?" +
                 "mode=driving&" +
                 "transit_routing_preference=less_driving&" +
                 "origin=" + currentPosition.latitude + "," + currentPosition.longitude + "&" +
                 "destination=" + destination + "&" +
-                "key=" + resources.getString(R.string.google_direction_api)
-        Log.d("CreasedMentor", requestApi)
+                "key=" + resources.getString("AIzaSyC3rPYQ7X9jX3X7IP3GaUnT1Bq0HlQ1vxE".toInt())
+        Log.d("Creased Mentor", "This is the requested api -> $requestApi")
         GlobalScope.launch(Dispatchers.Main) {
-            var response =
+            val response =
                 withContext(Dispatchers.IO) {
                     RetrofitClient.google_api.getPath(requestApi).execute()
                 }
             if (response.isSuccessful) {
-                var json_Array = JSONObject(response.body().toString()).getJSONArray("routes")
+                val json_Array = JSONObject(response.body().toString()).getJSONArray("routes")
                 for (i in 0..json_Array.length()) {
-                    var poly =
+                    val poly =
                         json_Array.getJSONObject(i).getJSONObject("overview_polyline")
-                    var polyline = poly.getString("points")
+                    val polyline = poly.getString("points")
                     polylineList = decodePoly(polyline)
                 }
             }
@@ -333,14 +333,9 @@ class WelcomeActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (isChecked) {
                     startLocationUpdates()
                     displayLocationUpdates()
-                    val toastLayout = layoutInflater.inflate(R.layout.toast_layout, linearLayout)
-
-                    val myToast = Toast(applicationContext)
-                    myToast.duration = Toast.LENGTH_LONG
-                    myToast.view = toastLayout
-                    myToast.show()
-//                    Toast.makeText(this@WelcomeActivity, "You are Online", Toast.LENGTH_LONG)
-//                        .show()
+//                  showToast()
+                    Toast.makeText(this@WelcomeActivity, "You are Online", Toast.LENGTH_LONG)
+                        .show()
                 } else {
                     stopLocationUpdates()
                     mMap.clear()
@@ -350,6 +345,14 @@ class WelcomeActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         })
+    }
+
+    private fun showToast() {
+        val toastLayout = layoutInflater.inflate(R.layout.toast_layout, linearLayout)
+        val myToast = Toast(applicationContext)
+        myToast.duration = Toast.LENGTH_LONG
+        myToast.view = toastLayout
+        myToast.show()
     }
 
     override fun onRequestPermissionsResult(
@@ -396,6 +399,7 @@ class WelcomeActivity : AppCompatActivity(), OnMapReadyCallback {
                 )
             )
         }
+        Log.d("Creased Mentor", "This is the last location ${mLastLocation.toString()}")
 //        mLastLocation = fusedLocationProviderClient.lastLocation.result
 //        if (mLastLocation != null && location_switch.isChecked) {
 //            mCurrent.remove()
@@ -407,7 +411,7 @@ class WelcomeActivity : AppCompatActivity(), OnMapReadyCallback {
 //            )
 //            mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(-34.0, 151.0)))
 //        }
-        this.RotateMarker(mCurrent, -360f, mMap)
+//      this.RotateMarker(mCurrent, -360f, mMap)
     }
 
     private fun RotateMarker(mCurrent: Marker, i: Float, mMap: GoogleMap) {
@@ -465,6 +469,7 @@ class WelcomeActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         mMap.setMapStyle(MapStyleOptions(resources.getString(R.string.style_json)))
         mMap.setIndoorEnabled(true)
+        mMap.uiSettings.setAllGesturesEnabled(true)
         mMap.isTrafficEnabled = true
         mMap.isBuildingsEnabled = true
         mMap.uiSettings.setAllGesturesEnabled(true)
@@ -472,10 +477,10 @@ class WelcomeActivity : AppCompatActivity(), OnMapReadyCallback {
 
         mCurrent = mMap.addMarker(
             MarkerOptions()
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.car))
                 .position(LatLng(-34.0, 151.0))
-                .title("Sydney")
+                .title("Temporary Location")
         )
         mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(-34.0, 151.0)))
     }
-
 }

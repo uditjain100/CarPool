@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Car Pool</string>
     <string name="title_activity_welcome">Map</string>
-    <string name="google_direction_api">AIzaSyBmeURoADuptDSWTXu-1YOLd21i_ttWxJo</string>
+    <string name="google_direction_api">AIzaSyBB4G1MPowePsX1_0XbqK8r3QZAJEjwgmg</string>
     <string name="style_json">
   [
     {

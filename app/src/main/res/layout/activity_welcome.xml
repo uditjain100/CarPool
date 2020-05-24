@@ -10,25 +10,47 @@
         android:id="@+id/layout_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/Gray"
         android:orientation="horizontal"
         android:weightSum="6">
 
-        <fragment
-            android:id="@+id/place_autocomplete_fragment"
-            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        <!--        <fragment-->
+        <!--            android:id="@+id/place_autocomplete_fragment"-->
+        <!--            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="45sp"-->
+        <!--            android:layout_margin="10dp"-->
+        <!--            android:layout_weight="5" />-->
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="wrap_content"
-            android:layout_height="45sp"
-            android:layout_margin="10dp"
-            android:layout_weight="5" />
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="5"
+            app:boxStrokeColor="@color/Black"
+            app:hintTextColor="@color/Black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/search_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="cursive"
+                android:hint="Enter destination Here"
+                android:padding="8dp"
+                android:textColor="@color/White"
+                android:textSize="25dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_go"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="2dp"
             android:layout_weight="1"
             android:backgroundTint="@color/DarkGoldenrod"
             android:text="GO"
+            android:textColor="@color/Black"
             app:cornerRadius="30dp"
             app:rippleColor="@color/Aqua" />
 
@@ -46,22 +68,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:backgroundTint="@color/Chocolate"
+        android:backgroundTint="@color/Gray"
         app:cardElevation="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
-            android:background="@color/Yellow"
+            android:background="@color/cardview_dark_background"
             android:orientation="horizontal"
             android:padding="16dp"
             android:weightSum="10">
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/location_switch"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginEnd="15dp"
                 android:layout_weight="2"
                 android:defaultFocusHighlightEnabled="false" />
 
@@ -73,6 +96,7 @@
                 android:background="@drawable/btn_register_background"
                 android:backgroundTint="@color/DeepPink"
                 android:text="FIND USER"
+                android:textColor="@color/Black"
                 android:textStyle="bold"
                 app:cornerRadius="30dp"
                 app:rippleColor="@color/Chocolate" />
